@@ -1,0 +1,28 @@
+
+services:
+  quickwit:
+    image: quickwit/quickwit:latest  # Quickwit'in resmi Docker imajını kullanıyoruz
+    container_name: quickwit
+    environment:
+      - QUICKWIT_DATA_DIR=/data  # Verinin saklanacağı yer
+      - QUICKWIT_HTTP_BIND=0.0.0.0:7280  # API'nin çalışacağı port
+    ports:
+      - "7280:7280"  # Quickwit API portu
+    volumes:
+      - quickwit_data:/data  # Veri için kalıcı depolama
+    networks:
+      - quickwit_network
+
+  # Burada diğer servisleri de ekleyebilirsiniz (ör. database vs.)
+  # Örnek:
+  # other_service:
+  #   image: some_image
+  #   ...
+
+volumes:
+  quickwit_data:  # Volume için kalıcı depolama alanı
+    driver: local
+
+networks:
+  quickwit_network:
+    driver: bridge
